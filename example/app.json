@@ -1,0 +1,22 @@
+{
+  "name": "react-native-strongholdpay-sdk-example",
+  "displayName": "StrongholdpaySdk Example",
+  "expo": {
+    "name": "react-native-strongholdpay-sdk-example",
+    "slug": "react-native-strongholdpay-sdk-example",
+    "description": "Example app for react-native-strongholdpay-sdk",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
