@@ -2,6 +2,13 @@
 
 Stronghold Pay SDK for React Native
 
+## How to make build
+
+```sh
+yarn install
+yarn prepare
+```
+
 ## Installation
 
 ```sh
