@@ -1,10 +1,10 @@
 import * as querystring from 'querystring';
 import type {
-  AddPaymentSourceData,
-  UpdatePaymentSourceData,
   ChargeData,
+  MethodsData,
   TipData,
   TipDropin,
+  UpdatePaymentSourceData,
 } from './types';
 
 export type Route =
@@ -40,15 +40,13 @@ export interface UrlQueryData {
   tipDetailsDrawerId?: string;
 }
 
-export type MethodsData = AddPaymentSourceData &
-  UpdatePaymentSourceData &
-  ChargeData &
-  TipData;
-
-export function getQueryParamsFromOptions(options: MethodsData): UrlQueryData {
+export function getQueryParamsFromOptions(
+  options: MethodsData = {}
+): UrlQueryData {
   const payLinkId = options.payLinkId || options.payLinkCode;
 
-  let paymentSourceId: string | undefined = options.paymentSourceId;
+  let paymentSourceId: string | undefined = (options as UpdatePaymentSourceData)
+    .paymentSourceId;
   let chargeAmount: number | undefined;
   let chargePaymentSourceId: string | undefined;
   let chargeExternalId: string | undefined;
@@ -68,8 +66,8 @@ export function getQueryParamsFromOptions(options: MethodsData): UrlQueryData {
     chargeExternalId = charge.externalId;
   }
 
-  if (options.tip) {
-    const tip = options.tip;
+  if ((options as TipData).tip) {
+    const tip = (options as TipData).tip;
     tipAmount = tip.amount;
     tipBeneficiaryName = tip.beneficiaryName;
     tipPaymentSourceId = (tip as TipDropin).paymentSourceId;
@@ -93,7 +91,7 @@ export function getQueryParamsFromOptions(options: MethodsData): UrlQueryData {
 
     paymentSourceId,
 
-    authorizeOnly: options.authorizeOnly,
+    authorizeOnly: (options as ChargeData).authorizeOnly,
 
     chargeAmount,
     chargePaymentSourceId,

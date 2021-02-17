@@ -8,11 +8,14 @@ export interface ClientOptions {
 }
 
 export type AddPaymentSourceOnSuccess = (paymentSource: PaymentSource) => void;
-export type UpdatePaymentSourceOnSuccess = (
-  paymentSource: PaymentSource
-) => void;
+export type UpdatePaymentSourceOnSuccess = () => void;
 export type ChargeOnSuccess = (charge: Charge) => void;
 export type TipOnSuccess = (tip: Tip) => void;
+export type OnSuccessMethod =
+  | AddPaymentSourceOnSuccess
+  | UpdatePaymentSourceOnSuccess
+  | ChargeOnSuccess
+  | TipOnSuccess;
 export type OnExit = () => void;
 export type OnReady = () => void;
 export type OnError = (error: StrongholdPayError) => void;
@@ -33,12 +36,25 @@ interface InternalData {
 export interface AddPaymentSourceData extends InternalData {}
 
 export interface UpdatePaymentSourceData extends InternalData {
+  /**
+   * The payment source that needs to be updated.
+   */
   paymentSourceId: string;
 }
 
 export interface ChargeData extends InternalData {
+  /**
+   * Determine if the charge will be only autorized or captured as well.
+   * @default false
+   */
   authorizeOnly?: boolean;
+  /**
+   * The information related to the charge.
+   */
   charge: ChargeDropin;
+  /**
+   * The information related to the tip.
+   */
   tip?: TipDataDropin;
 }
 
@@ -47,10 +63,28 @@ export interface TipData extends InternalData {
   tip: TipDropin;
 }
 
+export type MethodsData =
+  | AddPaymentSourceData
+  | UpdatePaymentSourceData
+  | ChargeData
+  | TipData;
+
 export interface Callbacks {
+  /**
+   * Called when the customer exit the flow.
+   */
   onExit?: OnExit;
+  /**
+   * Called when an error occurs.
+   */
   onError?: OnError;
+  /**
+   * Called when an event is fired.
+   */
   onEvent?: OnEvent;
+  /**
+   * Called when the flow is ready and showed to the customer.
+   */
   onReady?: OnReady;
 }
 
@@ -71,20 +105,20 @@ export type ChargeOptions = ChargeData &
 
 export type TipOptions = TipData &
   Callbacks & {
-    tip: TipDropin;
-    authorizeOnly?: boolean;
     onSuccess: TipOnSuccess;
   };
 
-export interface StrongholdMessageEvent extends MessageEvent {
-  data: {
-    event: EVENT;
-    payload: {
-      err: StrongholdPayError | null;
-      // tslint:disable-next-line: no-any
-      data: any;
-    };
+export interface MessageEventData {
+  event: EVENT;
+  payload: {
+    err: StrongholdPayError | null;
+    // tslint:disable-next-line: no-any
+    data: any;
   };
+}
+
+export interface StrongholdMessageEvent extends MessageEvent {
+  data: MessageEventData;
 }
 
 export interface ChargeDropin {
@@ -92,7 +126,13 @@ export interface ChargeDropin {
    * The amount to charge, specified in the smallest divisible currency unit. For example, number of cents of United States dollar.
    */
   amount: number;
+  /**
+   * The ID of the payment source to charge.
+   */
   paymentSourceId: string;
+  /**
+   * A merchant-specific external ID (e.g. a merchant order ID).
+   */
   externalId?: string;
 }
 
@@ -101,16 +141,34 @@ export interface TipDataDropin {
    * The amount to charge, specified in the smallest divisible currency unit. For example, number of cents of United States dollar.
    */
   amount: number;
+  /**
+   * The name of the budtender getting the tip.
+   */
   beneficiaryName: string;
   details?: {
+    /**
+     * The message to display during the tipping flow.
+     */
     displayMessage?: string;
+    /**
+     * The id of the terminal used for the payment.
+     */
     terminalId?: string;
+    /**
+     * The id of the drawer.
+     */
     drawerId?: string;
   };
 }
 
 export interface TipDropin extends TipDataDropin {
+  /**
+   * The ID of the original charge the tip is for.
+   */
   chargeId: string;
+  /**
+   * The ID of the payment source to charge.
+   */
   paymentSourceId: string;
 }
 

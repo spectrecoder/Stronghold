@@ -153,7 +153,6 @@
     ]
   },
   "dependencies": {
-    "@types/stronghold-pay-js": "^2.0.1",
     "react-native-webview": "^11.2.1"
   }
 }

@@ -1,24 +1,24 @@
 import React from 'react';
 import type { PressableProps } from 'react-native';
 import type {
-  AddPaymentSourceData,
-  AddPaymentSourceOnSuccess,
   MethodsData,
+  UpdatePaymentSourceData,
+  UpdatePaymentSourceOnSuccess,
 } from '../sdk/types';
 import type { CommonProps } from '../types';
 import { PayPressable } from './PayPressable';
 
-export type AddPaymentSourceProps = PressableProps &
+export type UpdatePaymentSourceProps = PressableProps &
   CommonProps & {
-    data?: AddPaymentSourceData;
-    onSuccess: AddPaymentSourceOnSuccess;
+    data: UpdatePaymentSourceData;
+    onSuccess: UpdatePaymentSourceOnSuccess;
   };
 
-export const AddPaymentSource = (props: AddPaymentSourceProps) => {
+export const UpdatePaymentSource = (props: UpdatePaymentSourceProps) => {
   return (
     <PayPressable
       {...props}
-      route="/paymentsources/add"
+      route="/paymentsources/update"
       onSuccess={props.onSuccess}
       data={props.data as MethodsData}
     />

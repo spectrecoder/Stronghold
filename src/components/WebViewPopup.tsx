@@ -1,83 +1,89 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
-import { formatUrl, getQueryParamsFromOptions, MethodsData } from '../sdk';
+import { formatUrl, getQueryParamsFromOptions, Route } from '../sdk/url';
+import { handleEvent } from '../sdk/events';
 import type {
   AddPaymentSourceData,
+  MessageEventData,
+  MethodsData,
+  OnSuccessMethod,
   UpdatePaymentSourceData,
 } from '../sdk/types';
 import type { CommonProps } from '../types';
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // backgroundColor: 'transparent',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
+  container: {},
   modalView: {
-    // margin: 20,
-    // backgroundColor: 'white',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-    // elevation: 5,
     width: '100%',
     height: '100%',
   },
-  webView: {
-    // width: '100%',
-    // height: '100%',
-  },
+  webView: {},
 });
 
 interface Props extends CommonProps {
-  type: 'addPaymentSource' | 'updatePaymentSource' | 'charge' | 'tip';
+  route: Route;
   data: AddPaymentSourceData | UpdatePaymentSourceData;
+  onSuccess?: OnSuccessMethod;
 }
 
-export const WebViewPopup = (props: Props) => {
-  const {
-    host = 'https://strongholdpay.com',
-    publishableKey,
-    customerToken,
-    data,
-  } = props;
+export class WebViewPopup extends Component<Props> {
+  bridge = (event: WebViewMessageEvent) => {
+    const {
+      onError = () => {},
+      onEvent = () => {},
+      onExit = () => {},
+      onReady = () => {},
+      onSuccess,
+    } = this.props;
 
-  const uri = formatUrl({
-    host,
-    publishableKey,
-    customerToken,
-    route: '/paymentsources/add',
-    data: getQueryParamsFromOptions(data as MethodsData),
-  });
+    const messageEventData = JSON.parse(
+      event.nativeEvent.data
+    ) as MessageEventData;
 
-  const bridge = (event: WebViewMessageEvent) => {
-    console.log('EVENT');
-    console.log(event);
-    if (event.nativeEvent.data === 'exit' && props.onExit) {
-      props.onExit();
-    }
+    handleEvent(
+      {
+        onError,
+        onEvent,
+        onExit,
+        onReady,
+        onSuccess: onSuccess || (() => {}),
+      },
+      messageEventData
+    );
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.modalView}>
-        <WebView
-          startInLoadingState={true}
-          originWhitelist={['*']}
-          scalesPageToFit={true}
-          source={{
-            uri,
-          }}
-          style={styles.webView}
-          onMessage={(event) => bridge(event)}
-        />
-      </View>
-    </SafeAreaView>
-  );
-};
+  render() {
+    const {
+      host = 'https://strongholdpay.com',
+      publishableKey,
+      customerToken,
+      route,
+    } = this.props;
+
+    const uri = formatUrl({
+      host,
+      publishableKey,
+      customerToken,
+      route,
+      data: getQueryParamsFromOptions(this.props.data as MethodsData),
+    });
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.modalView}>
+          <WebView
+            startInLoadingState={true}
+            originWhitelist={['*']}
+            scalesPageToFit={true}
+            source={{
+              uri,
+            }}
+            style={styles.webView}
+            onMessage={(event) => this.bridge(event)}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
