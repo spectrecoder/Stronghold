@@ -5,7 +5,7 @@ stages:
 # Testing
 .testing:
   stage: testing
-  image: registry.gitlab.com/strongholdkeep/development/docker/node:14
+  image: node:14
   before_script:
     - npm i -g yarn
     - yarn install
