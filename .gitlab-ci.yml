@@ -7,7 +7,6 @@ stages:
   stage: testing
   image: node:14
   before_script:
-    - npm i -g yarn
     - yarn install
 unit_tests:
   extends:
