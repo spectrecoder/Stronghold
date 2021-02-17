@@ -1,0 +1,25 @@
+stages:
+  - testing
+
+# ===================
+# Testing
+.testing:
+  stage: testing
+  image: registry.gitlab.com/strongholdkeep/development/docker/node:14
+  before_script:
+    - yarn install
+unit_tests:
+  extends:
+    - .testing
+  script:
+    - npm run test
+build:
+  extends:
+    - .testing
+  script:
+    - npm run typescript
+lint:
+  extends:
+    - .testing
+  script:
+    - npm run lint

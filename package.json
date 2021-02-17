@@ -24,6 +24,7 @@
   "scripts": {
     "test": "jest",
     "typescript": "tsc --noEmit",
+    "build": "npm run typescript",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "bob build",
     "release": "release-it",
