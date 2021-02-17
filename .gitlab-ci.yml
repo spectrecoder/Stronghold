@@ -7,6 +7,7 @@ stages:
   stage: testing
   image: registry.gitlab.com/strongholdkeep/development/docker/node:14
   before_script:
+    - npm i -g yarn
     - yarn install
 unit_tests:
   extends:
@@ -17,7 +18,7 @@ build:
   extends:
     - .testing
   script:
-    - npm run typescript
+    - npm run build
 lint:
   extends:
     - .testing
