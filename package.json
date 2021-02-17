@@ -1,5 +1,5 @@
 {
-  "name": "react-native-strongholdpay-sdk",
+  "name": "react-native-stronghold-pay-sdk",
   "version": "0.1.0",
   "description": "Stronghold Pay SDK for React Native",
   "main": "lib/commonjs/index",
