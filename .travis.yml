@@ -2,15 +2,20 @@ language: node_js
 node_js:
   - 12
   - 14
+
+stage:
+  - build
+  - test
+
 jobs:
   include:
-    - stage: "Build"
+    - stage: build
       script: npm run build
       name: "Build"
-    - stage: "Build"
+    - stage: build
       script: npm run lint
       name: "Lint"
-    - stage: "Tests"
+    - stage: test
       script: npm run test
       name: "Unit Tests"
       
