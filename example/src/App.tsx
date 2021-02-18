@@ -128,7 +128,7 @@ export default function App() {
             charge: { amount: 3000, paymentSourceId },
             tip: {
               amount: 200,
-              beneficiaryName: 'My Budtender',
+              beneficiaryName: 'The Beneficiary Person',
             },
           }}
           onSuccess={(charge) => {
@@ -160,7 +160,7 @@ export default function App() {
             amount: 300,
             paymentSourceId: paymentSourceId,
             chargeId: chargeId,
-            beneficiaryName: 'My Budtender',
+            beneficiaryName: 'The Beneficiary Person',
           },
         }}
         onSuccess={(tip) => {

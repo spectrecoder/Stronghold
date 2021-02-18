@@ -88,7 +88,7 @@ import {
     charge: { amount: 4950, paymentSourceId, externalId: '12345679' },
     tip: {
         amount: 200,
-        beneficiaryName: 'My Budtender',
+        beneficiaryName: 'The Beneficiary Person',
     },
   }}
   onSuccess={(charge) => {
@@ -110,7 +110,7 @@ import {
       amount: 300,
       paymentSourceId: paymentSourceId,
       chargeId: chargeId,
-      beneficiaryName: 'My Budtender',
+      beneficiaryName: 'The Beneficiary Person',
     },
   }}
   onSuccess={(tip) => {
