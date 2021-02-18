@@ -4,10 +4,13 @@ node_js:
   - 14
 jobs:
   include:
-    - stage: "Tests"
-      name: "Unit Tests"
-      script: npm run test
-    - name: "Lint"
-      script: npm run lint
-    - name: "Build"
+    - stage: "Build"
       script: npm run build
+      name: "Build"
+    - stage: "Build"
+      script: npm run lint
+      name: "Lint"
+    - stage: "Tests"
+      script: npm run test
+      name: "Unit Tests"
+      

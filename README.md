@@ -1,3 +1,5 @@
+[![Build Status](https://www.travis-ci.com/strongholdpay/react-native-sdk.svg?branch=master)](https://www.travis-ci.com/strongholdpay/react-native-sdk)
+
 # react-native-strongholdpay-sdk
 
 Stronghold Pay SDK for React Native
