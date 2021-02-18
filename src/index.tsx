@@ -1,5 +1,4 @@
-export default {
-  multiply(a: number, b: number) {
-    return Promise.resolve(a * b);
-  },
-};
+export * from './components/AddPaymentSource';
+export * from './components/UpdatePaymentSource';
+export * from './components/Charge';
+export * from './components/Tip';

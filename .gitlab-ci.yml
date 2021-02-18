@@ -1,0 +1,25 @@
+stages:
+  - testing
+
+# ===================
+# Testing
+.testing:
+  stage: testing
+  image: node:14
+  before_script:
+    - yarn install
+unit_tests:
+  extends:
+    - .testing
+  script:
+    - npm run test
+build:
+  extends:
+    - .testing
+  script:
+    - npm run build
+lint:
+  extends:
+    - .testing
+  script:
+    - npm run lint

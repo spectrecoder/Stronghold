@@ -1,0 +1,12 @@
+language: node_js
+node_js: 14
+jobs:
+  include:
+    - stage: test
+      script: npm run build
+      name: "Build"
+    - script: npm run lint
+      name: "Lint"
+    - script: npm run test
+      name: "Unit Tests"
+      
